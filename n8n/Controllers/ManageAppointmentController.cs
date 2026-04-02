@@ -27,7 +27,8 @@ namespace n8n.Controllers
                     appointment.CustomerName,
                     appointment.Email,
                     appointment.Services,
-                    appointment.Date
+                    appointment.Date,
+                    appointment.TelegramID,
                 });
             }
             return Ok(result);
@@ -46,17 +47,17 @@ namespace n8n.Controllers
                     appointment.CustomerName,
                     appointment.Email,
                     appointment.Services,
-                    appointment.Date
+                    appointment.Date,
+                    appointment.TelegramID,
                 });
             }
             return Ok(result);
         }
         //检查空位
-        [HttpGet("{datetime}")]
-        public async Task<IActionResult> CheckAvailable(string datetime)
-        {
-            var date = DateTime.Parse(datetime);
-            var count = await _db.Appointments.CountAsync(x => x.Date.Date == date.Date);
+        [HttpGet]
+        public async Task<IActionResult> CheckAvailable([FromQuery] DateTime datetime)
+        { 
+            var count = await _db.Appointments.CountAsync(x => x.Date == datetime);
             return Ok(new { AvailableSlots = Math.Max(0, 10 - count) });
         }
         //检查预约时间

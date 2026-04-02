@@ -49,11 +49,25 @@ namespace n8n.Controllers
             }
             else
             {
-                user.IsActive =true;
+                user.IsActive = true;
                 _db.AgentStatuses.Update(user);
             }
             await _db.SaveChangesAsync();
             return Ok();
+        }
+        //检查ai chat状态
+        [HttpGet("{telegramid}")]
+        public async Task<IActionResult> CheckStatus(string telegramid)
+        {
+            var user = await _db.AgentStatuses.FirstOrDefaultAsync(x => x.TelegramID == telegramid);
+            if (user == null)
+            {
+                return Ok(new { IsActive = true });
+            }
+            else
+            {
+                return Ok(new { user.IsActive });
+            }
         }
     }
 }
