@@ -35,7 +35,7 @@ namespace n8n.Controllers
         }
         //检查明天预约
         [HttpGet]
-        public async Task<IActionResult> CheckTomorrom()
+        public async Task<IActionResult> CheckTomorrow()
         {
             var tomorrow = DateTime.Now.AddDays(1);
             var appointments = await _db.Appointments.Where(x => x.Date.Date == tomorrow.Date).ToListAsync();
@@ -71,7 +71,8 @@ namespace n8n.Controllers
                     x.CustomerName,
                     x.Email,
                     x.Services,
-                    x.Date
+                    x.Date,
+                    x.TelegramID
                 }).ToListAsync();
             return Ok(upcoming);
         }
